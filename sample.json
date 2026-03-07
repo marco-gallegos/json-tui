@@ -1,0 +1,56 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice Johnson",
+      "email": "alice@example.com",
+      "address": {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "country": "USA",
+        "coordinates": {
+          "lat": 39.7817,
+          "lng": -89.6501
+        }
+      },
+      "roles": ["admin", "developer"],
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "Bob Smith",
+      "email": "bob@example.com",
+      "address": {
+        "street": "456 Oak Ave",
+        "city": "Portland",
+        "country": "USA",
+        "coordinates": {
+          "lat": 45.5152,
+          "lng": -122.6784
+        }
+      },
+      "roles": ["user"],
+      "active": false
+    }
+  ],
+  "config": {
+    "version": "2.0.0",
+    "features": {
+      "darkMode": true,
+      "notifications": {
+        "email": true,
+        "push": false,
+        "sms": null
+      },
+      "limits": {
+        "maxUsers": 100,
+        "maxStorage": 10737418240
+      }
+    }
+  },
+  "metadata": {
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-03-01T14:45:00Z",
+    "tags": ["production", "primary", "v2"]
+  }
+}
