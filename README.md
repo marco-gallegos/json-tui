@@ -4,7 +4,7 @@ A terminal JSON viewer with columnar navigation, inspired by [JSON Hero](https:/
 
 ![Python 3.14+](https://img.shields.io/badge/python-3.14+-blue.svg)
 
-![screenshot of column layouts](./json_tui_sc1.png)
+<img style="max-height: 300px;" src="https://raw.githubusercontent.com/marco-gallegos/json-tui/refs/heads/main/json_tui_sc1.png" />
 
 ## Why?
 
