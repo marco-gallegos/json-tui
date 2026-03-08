@@ -4,7 +4,11 @@ version = "1.0.4"
 description = "A terminal JSON viewer with columnar navigation like JSON Hero"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = ["click>=8.3.1", "textual>=8.0.2"]
+dependencies = [
+    "click>=8.3.1",
+    "loguru>=0.7.3",
+    "textual>=8.0.2",
+]
 
 [project.scripts]
 json-tui = "json_tui.__main__:main"

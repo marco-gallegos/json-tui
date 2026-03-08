@@ -13,6 +13,7 @@ from textual.widgets import Footer, Header, Static
 
 from json_tui.models import JsonNode
 from json_tui.widgets import ColumnView, PreviewPanel
+from json_tui.logging import logger, timeit
 
 
 class PathDisplay(Static):
@@ -88,7 +89,10 @@ class JsonTuiApp(App):
                 if self.root_node and self.root_node.is_expandable:
                     yield ColumnView(self.root_node, id="column-view")
                 else:
-                    yield Static("No JSON data loaded or data is not expandable", id="empty-message")
+                    yield Static(
+                        "No JSON data loaded or data is not expandable",
+                        id="empty-message",
+                    )
 
             with Container(id="bottom-panel"):
                 yield PreviewPanel(id="preview")
@@ -105,6 +109,7 @@ class JsonTuiApp(App):
         if self.json_path:
             self.sub_title = str(self.json_path.name)
 
+    @timeit("File loaded & parsed")
     def _load_file(self, path: Path) -> None:
         """Load JSON from a file."""
         try:
@@ -114,6 +119,7 @@ class JsonTuiApp(App):
         except (json.JSONDecodeError, OSError) as e:
             self.notify(f"Error loading file: {e}", severity="error")
 
+    @timeit("JSON data loaded to tree")
     def _load_data(self, data: dict | list) -> None:
         """Load parsed JSON data."""
         self.json_data = data
@@ -122,6 +128,7 @@ class JsonTuiApp(App):
         if self.is_mounted:
             self._refresh_view()
 
+    @timeit("View refreshed")
     def _refresh_view(self) -> None:
         """Refresh the column view with new data."""
         content = self.query_one("#content", Container)

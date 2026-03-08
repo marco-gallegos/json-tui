@@ -9,6 +9,9 @@ from pathlib import Path
 import click
 
 from json_tui.app import JsonTuiApp
+from json_tui.logging import setup
+
+LOG_FILE = Path("/tmp/json-tui.log")
 
 
 @click.command()
@@ -19,8 +22,14 @@ from json_tui.app import JsonTuiApp
     is_flag=True,
     help="Read JSON from stdin",
 )
+@click.option(
+    "--dev",
+    "-d",
+    is_flag=True,
+    help="Enable dev mode with performance metrics (logs to /tmp/json-tui.log)",
+)
 @click.version_option(package_name="json-tui")
-def main(file: Path | None, stdin: bool) -> None:
+def main(file: Path | None, stdin: bool, dev: bool) -> None:
     """A terminal JSON viewer with columnar navigation.
 
     Navigate JSON files with arrow keys in a column-based interface,
@@ -56,6 +65,8 @@ def main(file: Path | None, stdin: bool) -> None:
         raise click.ClickException(
             "No input provided. Pass a JSON file or use --stdin to read from stdin."
         )
+
+    setup(dev, LOG_FILE if dev else None)
 
     app = JsonTuiApp(json_data=json_data, json_path=json_path)
     app.run()
