@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
+import orjson
 from textual import on
 from textual.app import App, ComposeResult
 from textual.binding import Binding
@@ -128,8 +128,8 @@ class JsonTuiApp(App):
         try:
             file_size = path.stat().st_size
 
-            with open(path, "r", encoding="utf-8") as f:
-                data = json.load(f)
+            with open(path, "rb") as f:
+                data = orjson.loads(f.read())
             self._load_data(data)
 
             if self.root_node:
@@ -137,7 +137,7 @@ class JsonTuiApp(App):
                 logger.debug(
                     f"file={path.name} size={file_size} nodes={node_count} depth={max_depth}"
                 )
-        except (json.JSONDecodeError, OSError) as e:
+        except (orjson.JSONDecodeError, OSError) as e:
             self.notify(f"Error loading file: {e}", severity="error")
 
     @timeit("JSON data loaded to tree")

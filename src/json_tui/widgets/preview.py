@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import json
+import orjson
 
 from rich.syntax import Syntax
 from rich.text import Text
@@ -45,12 +45,12 @@ class PreviewPanel(Static):
 
         if node.node_type in (NodeType.OBJECT, NodeType.ARRAY):
             try:
-                json_str = json.dumps(node.value, indent=2, ensure_ascii=False)
+                json_str = orjson.dumps(node.value, option=orjson.OPT_INDENT_2).decode()
                 if len(json_str) > 2000:
                     json_str = json_str[:2000] + "\n..."
                 syntax = Syntax(json_str, "json", theme="monokai", word_wrap=True)
                 self.update(syntax)
-            except (TypeError, ValueError):
+            except TypeError, ValueError:
                 self.update(Text(str(node.value), style="yellow"))
         else:
             styled = self._style_value(node)

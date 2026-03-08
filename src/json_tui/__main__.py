@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-import json
 import sys
 from pathlib import Path
 
 import click
+import orjson
 
 from json_tui.app import JsonTuiApp
 from json_tui.logging import setup
@@ -49,15 +49,15 @@ def main(file: Path | None, stdin: bool, dev: bool) -> None:
 
     if stdin or (not file and not sys.stdin.isatty()):
         try:
-            json_data = json.load(sys.stdin)
-        except json.JSONDecodeError as e:
+            json_data = orjson.loads(sys.stdin.read())
+        except orjson.JSONDecodeError as e:
             raise click.ClickException(f"Invalid JSON from stdin: {e}")
     elif file:
         json_path = file
         try:
-            with open(file, "r", encoding="utf-8") as f:
-                json_data = json.load(f)
-        except json.JSONDecodeError as e:
+            with open(file, "rb") as f:
+                json_data = orjson.loads(f.read())
+        except orjson.JSONDecodeError as e:
             raise click.ClickException(f"Invalid JSON in {file}: {e}")
         except OSError as e:
             raise click.ClickException(f"Cannot read {file}: {e}")
