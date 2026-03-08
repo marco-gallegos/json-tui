@@ -1,0 +1,7 @@
+services:
+  dockpy314:
+    image: python:3.14-alpine
+    command: sleep infinity
+    volumes:
+      - ./dist:/root/dist
+      - ./examples:/root/examples
