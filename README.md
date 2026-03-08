@@ -2,7 +2,24 @@
 
 A terminal JSON viewer with columnar navigation, inspired by [JSON Hero](https://jsonhero.io).
 
-![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)
+![Python 3.14+](https://img.shields.io/badge/python-3.14+-blue.svg)
+
+## Why?
+
+I love json hero but IRL privacy is a serious deal, in some companies
+i worked leaked client data can make you unemployed or worst.
+
+On my every day json unreadable responses (very long) happens a lot so
+this viewer gives me a similar experience without any data leak risk.
+
+what's solving?
+
+- offline, no data sent to any server
+- terminal-based, no need for a browser or GUI (work on ssh or inside pods/containers)
+- python-based, easy to install and extend
+- performance,use python means i can extend it with rust for performance critical
+parts if needed
+- uv compatibility, can be easily installed and run with uv
 
 ## Features
 
@@ -16,13 +33,12 @@ A terminal JSON viewer with columnar navigation, inspired by [JSON Hero](https:/
 ## Installation
 
 ```bash
-# Clone and install with uv
-git clone <repo>
-cd json_tui
-uv sync
+# Easy with uv
+uv tool install json-tui
 
-# Or install in development mode
-uv pip install -e .
+# Also pip works
+pip install json-tui
+
 ```
 
 ## Usage
@@ -41,7 +57,7 @@ echo '{"hello": "world", "nested": {"key": "value"}}' | json-tui -s
 ## Keybindings
 
 | Key | Action |
-|-----|--------|
+| ----- | -------- |
 | `↑` / `k` | Move up in current column |
 | `↓` / `j` | Move down in current column |
 | `←` / `h` | Focus previous column |
@@ -59,8 +75,15 @@ uv run json-tui sample.json
 
 # Or activate the venv
 source .venv/bin/activate
-json-tui sample.json
+json-tui examples/sample.json
 ```
+
+## Next Steps
+
+- parse json using rust for better performance or py threads
+- improve long columns handling
+- fuzzy search
+- copy curent value/node to clipboard
 
 ## License
 

@@ -26,11 +26,14 @@ def main(file: Path | None, stdin: bool) -> None:
     Navigate JSON files with arrow keys in a column-based interface,
     similar to JSON Hero but in your terminal.
 
+
     \b
     Examples:
         json-tui data.json
         curl api.example.com/data | json-tui --stdin
         echo '{"hello": "world"}' | json-tui -s
+
+    By: Marco Gallegos
     """
     json_data = None
     json_path = None
