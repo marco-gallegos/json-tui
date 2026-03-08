@@ -6,20 +6,18 @@ A terminal JSON viewer with columnar navigation, inspired by [JSON Hero](https:/
 
 ## Why?
 
-I love json hero but IRL privacy is a serious deal, in some companies
-i worked leaked client data can make you unemployed or worst.
+I love JSON Hero, but in real life, privacy is a serious issue. In some companies
+I've worked at, leaked client data can get you fired or worse.
+In my everyday work, unreadable JSON responses (very long ones) happen frequently,
+so this viewer gives me a similar experience without any data leak risk.
 
-On my every day json unreadable responses (very long) happens a lot so
-this viewer gives me a similar experience without any data leak risk.
+### What's it solving?
 
-what's solving?
-
-- offline, no data sent to any server
-- terminal-based, no need for a browser or GUI (work on ssh or inside pods/containers)
-- python-based, easy to install and extend
-- performance,use python means i can extend it with rust for performance critical
-parts if needed
-- uv compatibility, can be easily installed and run with uv
+- **Offline** - no data sent to any server
+- **Terminal-based** - no need for a browser or GUI (works over SSH or inside pods/containers)
+- **Python-based** - easy to install and extend
+- **Performance** - using Python means I can extend it with Rust for performance-critical parts if needed
+- **UV compatibility** - can be easily installed and run with UV
 
 ## Features
 
@@ -33,7 +31,7 @@ parts if needed
 ## Installation
 
 ```bash
-# Easy with uv
+# Easy with UV
 uv tool install json-tui
 
 # Also pip works
@@ -70,7 +68,7 @@ echo '{"hello": "world", "nested": {"key": "value"}}' | json-tui -s
 ## Development
 
 ```bash
-# Run directly with uv
+# Run directly with UV
 uv run json-tui sample.json
 
 # Or activate the venv
