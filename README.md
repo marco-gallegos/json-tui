@@ -4,6 +4,8 @@ A terminal JSON viewer with columnar navigation, inspired by [JSON Hero](https:/
 
 ![Python 3.14+](https://img.shields.io/badge/python-3.14+-blue.svg)
 
+![screenshot of column layouts](./json_tui_sc1.png)
+
 ## Why?
 
 I love JSON Hero, but in real life, privacy is a serious issue. In some companies
