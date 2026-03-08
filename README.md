@@ -83,6 +83,18 @@ json-tui examples/sample.json
 - fuzzy search
 - copy curent value/node to clipboard
 
+## Complementary Tools
+
+Before start working on this project i've looked at existing tools,
+and here are some that helped me and i'm still using some of them:
+
+- [Visi Data](https://www.visidata.org/) : json and a lot more visualization on your terminal.
+- [fx](https://fx.wtf/) : polished dropdown based viewer using go.
+- [jless](https://github.com/PaulJuliusMartinez/jless) : json reader and searcher in rust
+- [jq](https://github.com/jqlang/jq): the mature solution on json search and prettify, not "real time" or tui.
+- [jqp](https://github.com/noahgorstein/jqp) : the missing part of jq, tui + live preview.
+- [json-tui](https://github.com/ArthurSonzogni/json-tui): using c++ similar to fx.
+
 ## License
 
 MIT
