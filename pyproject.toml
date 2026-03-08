@@ -25,5 +25,10 @@ package = true
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[dependency-groups]
+dev = [
+    "ruff>=0.15.5",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/json_tui"]

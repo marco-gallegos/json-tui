@@ -16,6 +16,19 @@ from json_tui.widgets import ColumnView, PreviewPanel
 from json_tui.logging import logger, timeit
 
 
+def _count_nodes(node: JsonNode) -> tuple[int, int]:
+    """Count total nodes and max depth."""
+    count = 1
+    max_depth = node.depth
+
+    for child in node.children:
+        child_count, child_depth = _count_nodes(child)
+        count += child_count
+        max_depth = max(max_depth, child_depth)
+
+    return count, max_depth
+
+
 class PathDisplay(Static):
     """Widget showing the current path in the JSON tree."""
 
@@ -113,9 +126,17 @@ class JsonTuiApp(App):
     def _load_file(self, path: Path) -> None:
         """Load JSON from a file."""
         try:
+            file_size = path.stat().st_size
+
             with open(path, "r", encoding="utf-8") as f:
                 data = json.load(f)
             self._load_data(data)
+
+            if self.root_node:
+                node_count, max_depth = _count_nodes(self.root_node)
+                logger.debug(
+                    f"file={path.name} size={file_size} nodes={node_count} depth={max_depth}"
+                )
         except (json.JSONDecodeError, OSError) as e:
             self.notify(f"Error loading file: {e}", severity="error")
 
