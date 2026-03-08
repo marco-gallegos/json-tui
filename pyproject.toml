@@ -4,13 +4,13 @@ version = "1.0.3"
 description = "A terminal JSON viewer with columnar navigation like JSON Hero"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = [
-    "click>=8.3.1",
-    "textual>=8.0.2",
-]
+dependencies = ["click>=8.3.1", "textual>=8.0.2"]
 
 [project.scripts]
 json-tui = "json_tui.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/marco-gallegos/json-tui"
 
 [tool.uv]
 package = true
