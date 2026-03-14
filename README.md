@@ -1,6 +1,6 @@
 # JSON TUI
 
-A terminal JSON viewer with columnar navigation, inspired by [JSON Hero](https://jsonhero.io).
+Json TUI is a terminal JSON viewer with columnar navigation, inspired by [JSON Hero](https://jsonhero.io) but working in your cli and respecting your privacy.
 
 ![Python 3.14+](https://img.shields.io/badge/python-3.14+-blue.svg)
 
