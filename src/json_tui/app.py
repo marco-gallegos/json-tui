@@ -57,6 +57,7 @@ class JsonTuiApp(App):
     BINDINGS = [
         Binding("q", "quit", "Quit"),
         Binding("?", "toggle_help", "Help"),
+        Binding("y", "copy", "Copy"),
     ]
 
     CSS = """
@@ -180,3 +181,26 @@ class JsonTuiApp(App):
             "↑↓/jk: Navigate | ←→/hl: Columns | Enter: Expand | Backspace: Collapse | q: Quit",
             timeout=5,
         )
+
+    def action_copy(self) -> None:
+        """Copy the currently selected node to clipboard."""
+        column_view = self.query_one("#column-view", ColumnView)
+        node = column_view.get_selected_node()
+
+        if node is None:
+            self.notify("No node selected", severity="warning")
+            return
+
+        try:
+            json_bytes = orjson.dumps(node.value, option=orjson.OPT_INDENT_2)
+            json_str = json_bytes.decode("utf-8")
+
+            self.copy_to_clipboard(json_str)
+
+            size_kb = len(json_bytes) / 1024
+            if size_kb >= 1:
+                self.notify(f"Copied ({size_kb:.1f} KB)")
+            else:
+                self.notify(f"Copied ({len(json_bytes)} bytes)")
+        except Exception as e:
+            self.notify(f"Copy failed: {e}", severity="error")
