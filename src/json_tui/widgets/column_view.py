@@ -8,7 +8,6 @@ from textual import on
 from textual.binding import Binding
 from textual.containers import Horizontal, ScrollableContainer
 from textual.message import Message
-from textual.widget import Widget
 
 from json_tui.models import JsonNode
 from json_tui.widgets.column import JsonColumn
