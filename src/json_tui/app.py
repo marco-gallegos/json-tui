@@ -12,7 +12,8 @@ from textual.containers import Container, Vertical
 from textual.widgets import Footer, Header, Static
 
 from json_tui.models import JsonNode
-from json_tui.widgets import ColumnView, PreviewPanel
+from json_tui.search import build_index, SearchEntry, SearchResult
+from json_tui.widgets import ColumnView, PreviewPanel, SearchScreen
 from json_tui.logging import logger, timeit
 
 
@@ -58,6 +59,7 @@ class JsonTuiApp(App):
         Binding("q", "quit", "Quit"),
         Binding("?", "toggle_help", "Help"),
         Binding("y", "copy", "Copy"),
+        Binding("slash", "open_search", "Search"),
     ]
 
     CSS = """
@@ -91,6 +93,7 @@ class JsonTuiApp(App):
         self.json_data = json_data
         self.json_path = json_path
         self.root_node: JsonNode | None = None
+        self.search_entries: list[SearchEntry] | None = None
 
     def compose(self) -> ComposeResult:
         """Create the app layout."""
@@ -146,6 +149,7 @@ class JsonTuiApp(App):
         """Load parsed JSON data."""
         self.json_data = data
         self.root_node = JsonNode.from_json(data)
+        self.search_entries = None
 
         if self.is_mounted:
             self._refresh_view()
@@ -168,17 +172,48 @@ class JsonTuiApp(App):
     def _on_node_selected(self, event: ColumnView.NodeSelected) -> None:
         """Handle node selection."""
         event.stop()
+        self._show_node(event.node)
 
+    def _show_node(self, node: JsonNode) -> None:
+        """Show a node's path and preview."""
         path_display = self.query_one("#path-display", PathDisplay)
-        path_display.update_path(event.path)
+        path_display.update_path(node.path)
 
         preview = self.query_one("#preview", PreviewPanel)
-        preview.update_node(event.node)
+        preview.update_node(node)
+
+    def action_open_search(self) -> None:
+        """Open the fuzzy search screen."""
+        if not self.root_node:
+            self.notify("No JSON data loaded", severity="warning")
+            return
+
+        if self.search_entries is None:
+            self.search_entries = build_index(self.root_node)
+
+        self.push_screen(
+            SearchScreen(self.search_entries),
+            self._on_search_result,
+        )
+
+    async def _on_search_result(self, result: SearchResult | None) -> None:
+        """Navigate to the selected search result."""
+        if result is None:
+            return
+
+        try:
+            column_view = self.query_one("#column-view", ColumnView)
+        except Exception:
+            self.notify("No column view to navigate", severity="warning")
+            return
+
+        await column_view.navigate_to(result.node)
+        self._show_node(result.node)
 
     def action_toggle_help(self) -> None:
         """Show help information."""
         self.notify(
-            "↑↓/jk: Navigate | ←→/hl: Columns | Enter: Expand | Backspace: Collapse | q: Quit",
+            "↑↓/jk: Navigate | ←→/hl: Columns | Enter: Expand | Backspace: Collapse | /: Search | q: Quit",
             timeout=5,
         )
 

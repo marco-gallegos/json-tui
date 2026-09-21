@@ -64,6 +64,7 @@ echo '{"hello": "world", "nested": {"key": "value"}}' | json-tui -s
 | `→` / `l` | Focus next column / expand |
 | `Enter` | Expand selected node |
 | `Backspace` / `Esc` | Collapse / go back |
+| `/` | Fuzzy search the whole JSON (Enter/click a result to jump to it) |
 | `?` | Show help |
 | `q` | Quit |
 
@@ -82,7 +83,6 @@ json-tui examples/sample.json
 
 - parse json using rust for better performance or py threads
 - improve long columns handling
-- fuzzy search
 - copy curent value/node to clipboard
 
 ## Complementary Tools

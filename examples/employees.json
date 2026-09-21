@@ -1,0 +1,56 @@
+{
+  "root": {
+    "company": {
+      "name": "Sample Holdings Inc.",
+      "industry": "Commercial Real Estate",
+      "headquarters": "Chicago, IL",
+      "founded": 1998
+    },
+    "employees": {
+      "data": [
+        {
+          "common": {
+            "personal": {
+              "name": "Marco Gallegos"
+            }
+          }
+        },
+        {
+          "common": {
+            "personal": {
+              "name": "Jane Doe"
+            }
+          }
+        },
+        {
+          "common": {
+            "personal": {
+              "name": "Ahmed Khan"
+            }
+          }
+        },
+        {
+          "common": {
+            "personal": {
+              "name": "Li Wei"
+            }
+          }
+        },
+        {
+          "common": {
+            "personal": {
+              "name": "Sofia Martinez"
+            }
+          }
+        },
+        {
+          "common": {
+            "personal": {
+              "name": "Tom Becker"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

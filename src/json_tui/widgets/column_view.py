@@ -59,12 +59,18 @@ class ColumnView(ScrollableContainer):
         self.columns: list[JsonColumn] = []
         self.active_column_index: int = 0
         self._selected_node: JsonNode | None = None
+        self._next_column_id: int = 0
+
+    def _new_column_id(self) -> str:
+        """Return a unique column id to avoid DuplicateIds when rebuilding."""
+        self._next_column_id += 1
+        return f"col_{self._next_column_id}"
 
     def compose(self):
         """Create the initial column layout."""
         with Horizontal():
             if self.root.is_expandable:
-                col = JsonColumn(self.root, column_index=0, id="col_0")
+                col = JsonColumn(self.root, column_index=0, id=self._new_column_id())
                 self.columns.append(col)
                 yield col
 
@@ -95,7 +101,7 @@ class ColumnView(ScrollableContainer):
         self._trim_columns_after(from_column)
 
         new_index = from_column + 1
-        new_col = JsonColumn(node, column_index=new_index, id=f"col_{new_index}")
+        new_col = JsonColumn(node, column_index=new_index, id=self._new_column_id())
         self.columns.append(new_col)
 
         container = self.query_one(Horizontal)
@@ -143,3 +149,43 @@ class ColumnView(ScrollableContainer):
     def get_selected_node(self) -> JsonNode | None:
         """Get the currently selected node."""
         return self._selected_node
+
+    async def navigate_to(self, target: JsonNode) -> None:
+        """Expand columns along the path to the target node and highlight it."""
+        if not self.columns:
+            return
+
+        chain: list[JsonNode] = []
+        node: JsonNode | None = target
+        while node is not None:
+            chain.append(node)
+            node = node.parent
+        chain.reverse()
+
+        while len(self.columns) > 1:
+            col = self.columns.pop()
+            await col.remove()
+
+        self.active_column_index = 0
+        self._selected_node = None
+        self.columns[0].highlighted = None
+
+        for depth in range(1, len(chain)):
+            child = chain[depth]
+            is_last = depth == len(chain) - 1
+
+            if is_last:
+                parent = chain[depth - 1]
+                col = self.columns[depth - 1]
+                if parent.is_expandable and child in parent.children:
+                    col.select_index(parent.children.index(child))
+                self._selected_node = child
+                self.active_column_index = depth - 1
+                col.focus()
+                self.scroll_to_widget(col, animate=True)
+                self.post_message(self.NodeSelected(node=child, path=child.path))
+                break
+
+            if not child.is_expandable:
+                break
+            self._expand_node(child, depth - 1)
